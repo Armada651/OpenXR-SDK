@@ -30,11 +30,13 @@ add_custom_target(generate_openxr_header
 )
 
 # Copy the openxr_platform_defines.h file and place it in the binary (build) directory.
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/openxr_platform_defines.h
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h
-    COMMENT "Copying ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h to ${CMAKE_CURRENT_BINARY_DIR}"
-)
+if (NOT ${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/openxr_platform_defines.h
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h
+        COMMENT "Copying ${CMAKE_CURRENT_SOURCE_DIR}/openxr_platform_defines.h to ${CMAKE_CURRENT_BINARY_DIR}"
+    )
+endif()
 
 # Generate the openxr_platform.h file and place it in the binary (build) directory.
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/openxr_platform.h
